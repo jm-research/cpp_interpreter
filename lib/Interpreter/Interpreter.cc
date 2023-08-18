@@ -33,8 +33,8 @@ void Interpreter::PushTransactionRAII::pop() const {
 Interpreter::StateDebuggerRAII::StateDebuggerRAII(const Interpreter* i)
     : interpreter_(i) {
   if (interpreter_->isPrintingDebug()) {
-    const CompilerInstance& CI = *interpreter_->getCI();
-    CodeGenerator* CG = i->incr_parser_->getCodeGenerator();
+    const clang::CompilerInstance& CI = *interpreter_->getCI();
+    clang::CodeGenerator* CG = i->incr_parser_->getCodeGenerator();
 
     // The ClangInternalState constructor can provoke deserialization,
     // we need a transaction.
@@ -51,9 +51,13 @@ Interpreter::StateDebuggerRAII::~StateDebuggerRAII() {
     // The ClangInternalState destructor can provoke deserialization,
     // we need a transaction.
     PushTransactionRAII pushedT(interpreter_);
-    state_->compare("aName", interpreter_->m_Opts.Verbose());
+    state_->compare("aName", interpreter_->opts_.Verbose());
     state_.reset();
   }
+}
+
+clang::CompilerInstance* Interpreter::getCI() const {
+  return incr_parser_->getCI();
 }
 
 }  // namespace cppinterp

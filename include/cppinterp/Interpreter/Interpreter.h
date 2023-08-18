@@ -155,6 +155,11 @@ class Interpreter {
 
  public:
   CompilationOptions makeDefaultCompilationOpts() const;
+
+  clang::CompilerInstance* getCI() const;
+  clang::CompilerInstance* getCIOrNull() const;
+  clang::Sema& getSema() const;
+  clang::DiagnosticsEngine& getDiagnostics() const;
 };
 
 }  // namespace cppinterp
